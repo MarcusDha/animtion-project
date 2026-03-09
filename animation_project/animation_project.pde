@@ -11,8 +11,10 @@ color dgreen = #0F7C1A;
 color red = #FA6656;
 color brown = #8E6815;
 float grow = 0;
+float grow2 = 0;
 int y = 0;
-
+float a = 0;
+int b = 0;
 
 
 void setup() {
@@ -25,20 +27,34 @@ void draw () {
   //setting
   background(blue);
   fill(yellow);
-  ellipse(650, 150, 150, 150);
+  ellipse(400, 150, 150, 150);
   cloud(150, 200);
-  cloud(400, 100);
-  cloud(600, 200);
+  cloud(450, 100);
+  cloud(620, 220);
 
-
+  
   nuke(400, y);
   y = y + 2;
 
-  mushcloud(400,400,grow);
+
+  mushcloud(400, 400, grow);
   grow = grow - 1.5;
-  
+
+  mushcloud2(400, 1000, grow2);
+  grow2 = grow2 + 1.2;
 
   hill(200, 700);
+  house(200,695);
+  trees(200,700);
+  
+  //shadows / transparency
+  fill(0, a);
+  rect(0, 0, width, height);
+  a = a + 0.2;
+
+  nukeShadow(400, y+700, b);
+ 
+  
 }
 
 void nuke (int x, int y) {
@@ -97,8 +113,25 @@ void hill (int x, int y) {
   fill(green);
   ellipse(0, 0, 500, 300);
   ellipse(400, 100, 500, 300);
+  
+  fill(brown);
+  rect(-45, -120, 70, 1000);//path
 
-  //house
+
+  //rocks
+  fill(rock);
+  circle(330, 10, 10);
+  circle(370, 15, 10);
+  circle(410, -20, 15);
+  circle(490, 30, 10);
+
+  popMatrix();
+}
+
+void house (int x, int y) {
+  pushMatrix();
+  translate(x,y);
+  
   fill(yellow);
   rect(-60, -230, 100, 100);//base
   fill(red);
@@ -107,9 +140,14 @@ void hill (int x, int y) {
   rect(-50, -200, 30, 40);//window
   fill(brown);
   rect(-5, -195, 30, 65);//door
-  rect(-45, -120, 70, 1000);//path
+ 
+  popMatrix();
+}
 
-  //trees
+void trees (int x, int y) {
+  pushMatrix();
+  translate(x,y);
+  
   rect(330, -110, 30, 100);
   fill(dgreen);
   triangle(345, -160, 300, -110, 390, -110);
@@ -122,14 +160,7 @@ void hill (int x, int y) {
   triangle(465, -130, 420, -80, 510, -80);
   triangle(465, -160, 435, -110, 495, -110);
   triangle(465, -200, 445, -140, 485, -140);
-
-  //rocks
-  fill(rock);
-  circle(330, 10, 10);
-  circle(370, 15, 10);
-  circle(410, -20, 15);
-  circle(490, 30, 10);
-
+  
   popMatrix();
 }
 
@@ -139,17 +170,42 @@ void mushcloud (int x, int y, float grow) {
 
   fill(grey);
   rect(-60, 1000, 120, grow);
-
+  ellipse(0, grow + 1000, 250, 150);
 
   popMatrix();
 }
 
-void mushcloud2 (int x, int y, int grow2) {
+void mushcloud2 (int x, int y, float grow2) {
   pushMatrix();
   translate(x, y);
 
-  ellipse(0,0,grow2-50,grow2);
+  ellipse(0, 0, grow2-50, grow2);
+  
+  popMatrix();
+}
 
+void nukeShadow (int x, int y, int b) {
+
+  pushMatrix();
+  translate(x, y);
+
+
+  fill(100, b);
+  stroke(100, b);
+  ellipse(0, 0, 60, 70); // bottom part
+
+  //tail
+  fill( grey);
+  triangle(-25, -20, 25, -20, 0, -160);
+  //right
+  rect(9, -114, 20, 20);
+  triangle(9, -114, 29, -114, 29, -134);
+  triangle(29, -94, 9, -74, 9, -94);
+  //left
+  rect(-9, -114, -20, 20);
+  triangle(-9, -114, -29, -114, -29, -134);
+  triangle(-29, -94, -9, -74, -9, -94);
+  ellipse(0, -10, 60, 65);
 
   popMatrix();
 }
