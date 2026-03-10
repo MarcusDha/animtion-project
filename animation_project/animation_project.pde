@@ -12,9 +12,11 @@ color red = #FA6656;
 color brown = #8E6815;
 float grow = 0;
 float grow2 = 0;
+float grow3 = 0;
 int y = 0;
 float a = 0;
 int b = 0;
+int up = 1200;
 
 
 void setup() {
@@ -38,10 +40,20 @@ void draw () {
 
 
   mushcloud(400, 400, grow);
-  grow = grow - 1.5;
+  grow = grow - 1.2;
 
   mushcloud2(400, 1000, grow2);
-  grow2 = grow2 + 1.2;
+  grow2 = grow2 +0.8;
+  
+  mushcloudtop(400,400,grow3);
+  
+  if (grow < -900 ) {
+    grow3 = grow3 + 0.7;
+  }
+  if (grow < -1200 ) {
+    grow = grow + 1.2;
+    grow3 = grow3 - 0.7;
+  }
 
   hill(200, 700);
   house(200,695);
@@ -50,9 +62,10 @@ void draw () {
   //shadows / transparency
   fill(0, a);
   rect(0, 0, width, height);
-  a = a + 0.2;
+  a = a + 0.15;
 
-  nukeShadow(400, y+700, b);
+  nukeShadow(400, up, b);
+  up = up - 2;
  
   
 }
@@ -170,16 +183,31 @@ void mushcloud (int x, int y, float grow) {
 
   fill(grey);
   rect(-60, 1000, 120, grow);
-  ellipse(0, grow + 1000, 250, 150);
 
   popMatrix();
 }
+
+void mushcloudtop (int x, int y, float grow3) {
+  pushMatrix();
+  translate(x, y);
+
+  fill(grey);
+  ellipse(0,grow+1000,grow3+120,grow3+25);
+  strokeWeight(2);
+
+  popMatrix();
+}
+
 
 void mushcloud2 (int x, int y, float grow2) {
   pushMatrix();
   translate(x, y);
 
+  stroke(grey);
+  strokeWeight(35);
+  fill(245,210,10);
   ellipse(0, 0, grow2-50, grow2);
+  strokeWeight(2);
   
   popMatrix();
 }
@@ -188,7 +216,7 @@ void nukeShadow (int x, int y, int b) {
 
   pushMatrix();
   translate(x, y);
-
+  rotate( radians ( 180 ) );
 
   fill(100, b);
   stroke(100, b);
