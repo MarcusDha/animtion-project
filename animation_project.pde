@@ -17,11 +17,15 @@ float grow3 = 0;
 int y = 0;
 int r = 0;
 int r1 = 0;
+int r2 = 0;
+int r3 = 0;
 float a = 0;
 int b = 0;
 int up = 1200;
 int go = 200;
 int go2 = 200;
+int go3 = 200;
+int go4 = 200;
 
 
 void setup() {
@@ -35,7 +39,7 @@ void draw () {
   background(blue);
   fill(yellow);
   ellipse(400, 150, 150, 150);
-  cloud(150, 200);
+  cloud(150, 180);
   cloud(450, 100);
   cloud(620, 220);
 
@@ -48,7 +52,7 @@ void draw () {
   grow = grow - 1.2;
 
   mushcloud2(400, 1000, grow2);
-  grow2 = grow2 +0.8;
+  grow2 = grow2 +1;
 
   mushcloudtop(400, 400, grow3);
 
@@ -59,22 +63,34 @@ void draw () {
     grow = grow + 1.2;
     grow3 = grow3 - 0.7;
   }
+ 
 
   hill(200, 700);
   house(go, 695,r);
+  roof(go3,695,r2);
   trees(go2, 700, r1);
+  leaves(go4,700,r3);
 
+  
+  
+  if (grow2 > 1000) {
+    go3 = go3 - 3;
+    r2 = -10;
+    go4 = go4 + 3;
+    r3 = 10;
+  }
+  
   if (grow2 > 1100) {
-    go = go - 3;
+    go = go - 2;
     r = -10;
-    go2 = go2 + 3;
+    go2 = go2 + 2;
     r1 = 10;
   }
 
     //shadows / transparency
     fill(0, a);
     rect(0, 0, width, height);
-    a = a + 0.15;
+    a = a + 0.17;
 
     nukeShadow(400, up, b);
     up = up - 2;
@@ -162,8 +178,6 @@ void draw () {
 
     fill(yellow);
     rect(-60, -230, 100, 100);//base
-    fill(red);
-    triangle(-10, -290, 60, -230, -80, -230);//roof
     fill(blue);
     rect(-50, -200, 30, 40);//window
     fill(brown);
@@ -171,12 +185,23 @@ void draw () {
 
     popMatrix();
   }
+  
+  void roof (int x, int y, int r2) {
+   pushMatrix();
+   translate(x,y);
+   rotate(radians ( r2 ) );
+   
+   fill(red);
+   triangle(-10, -290, 60, -230, -80, -230);//roof
+   popMatrix();
+  }
 
   void trees (int x, int y, int r1) {
     pushMatrix();
     translate(x, y);
     rotate( radians ( r1 ) );
 
+    fill(brown);
     rect(330, -110, 30, 100);
     fill(dgreen);
     triangle(345, -160, 300, -110, 390, -110);
@@ -185,11 +210,18 @@ void draw () {
 
     fill(brown);
     rect(450, -80, 30, 100);
+    popMatrix();
+  }
+  
+  void leaves (int x,int y, int r3) {
+    pushMatrix();
+    translate(x,y);
+    rotate ( radians ( r3 ) );
+    
     fill(dgreen);
     triangle(465, -130, 420, -80, 510, -80);
     triangle(465, -160, 435, -110, 495, -110);
     triangle(465, -200, 445, -140, 485, -140);
-
     popMatrix();
   }
 
@@ -199,7 +231,12 @@ void draw () {
 
     fill(grey);
     rect(-60, 1000, 120, grow);
-
+    stroke(245, 210, 10);
+    fill(245, 210, 10);
+    line(-30,1000,-30,grow+1000);
+    line(0,1000,0,grow+1000);
+    line(30,1000,30,grow+1000);
+    
     popMatrix();
   }
 
@@ -207,10 +244,10 @@ void draw () {
     pushMatrix();
     translate(x, y);
 
+    fill(grey);
+    ellipse(0, grow+1000, grow3+120, grow3+45);
     fill(245,210,10);
-    stroke(grey);
-    strokeWeight(25);
-    ellipse(0, grow+1000, grow3+120, grow3+25);
+    ellipse(0,grow+1050, grow3,grow3-45);
     strokeWeight(2);
 
     popMatrix();
